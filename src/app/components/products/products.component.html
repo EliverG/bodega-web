@@ -1,0 +1,101 @@
+  <div class="vh-100 gradient-custom">
+    <div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+  <div>
+    <h2 class="fw-bold mb-2 text-uppercase text-center">Inventario de Bodega</h2>
+  </div>
+      <p-table #dt1 [value]="productList" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['id_product', 'product_name', 'stock','categoria','serie']">
+        <ng-template pTemplate="caption">
+          <div class="flex">
+            <button pButton label="Limpiar" class="p-button-outlined" icon="pi pi-filter-slash"
+              (click)="clear(dt1)"></button>
+            <span class="p-input-icon-left ml-auto">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="dt1.filterGlobal(getEventValue($event), 'contains')"
+                placeholder="Buscar" />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="min-width:1rem">
+              <div class="flex justify-content-center align-items-center">
+                Id
+                <p-columnFilter type="number" field="id_product" display="menu"></p-columnFilter>
+              </div>
+            </th>
+            <th style="min-width:15rem">
+              <div class="flex justify-content-center align-items-center">
+                Producto
+                <p-columnFilter type="text" field="product_name" display="menu"></p-columnFilter>
+              </div>
+            </th>
+
+            <th style="min-width:1rem">
+              <div class="flex justify-content-center align-items-center">
+                Stock
+                <p-columnFilter type="number" field="stock" display="menu"></p-columnFilter>
+              </div>
+            </th>
+            <th style="min-width:5rem">
+              <div class="flex justify-content-center align-items-center">
+                Categoria
+                <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+              </div>
+            </th>
+            <th style="min-width:1rem">
+              <div class="flex justify-content-center align-items-center">
+                Marca
+                <p-columnFilter type="text" field="marca" display="menu"></p-columnFilter>
+              </div>
+            </th>
+            <th style="min-width:10rem">
+              <div class="flex justify-content-center align-items-center">
+                Serie
+                <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+              </div>
+            </th>
+            <th style="min-width:1rem">
+              <div class="flex justify-content-center align-items-center">Acciones</div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr>
+            <td>
+              {{product.id_product}}
+            </td>
+            <td>
+              <span class="image-text">{{product.product_name}}</span>
+            </td>
+            <td>
+              <span class="image-text">{{product.stock}}</span>
+            </td>
+            <td>
+              {{product.categoria}}
+            </td>
+            <td>
+              {{product.marca}}
+            </td>
+            <td>
+              {{product.serie}}
+            </td>
+            <td>
+              <p-menu #menu [popup]="true" [model]="items" [id]="product.id_product"></p-menu>
+              <button type="button" pButton icon="pi pi-bars"
+              (click)="selectedItem = product.id_product; menu.toggle($event)"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">No Data Found</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    </div>
+    </div>
