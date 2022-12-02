@@ -12,12 +12,13 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
+
 export class ProductsComponent implements OnInit {
 
   public productList: Products[] = []
   public items: MenuItem[] = []
 
-  public loading: boolean = true
+  public clearInput: string = ""
   public selectedItem: any = null
   public ref: DynamicDialogRef = new DynamicDialogRef()
   public dialogConf = new DynamicDialogConfig();
@@ -33,25 +34,20 @@ export class ProductsComponent implements OnInit {
     this.getListProducts()
   }
 
-  public getListProducts(): void {
-    this.productService.listProducts().then(response => {
-      if (response.status === 200) {
-        this.productList = response.body
-        this.showItems()
-        this.loading = false;
-      } else {
-        console.log("error")
-      }
-    })
+
+  public async getListProducts(){
+    this.productList = []
+    this.productList = await this.productService.listProducts()
+    this.showItems()
   }
 
-  public showItems() {
+  public showItems(): void {
 
     this.items = [
       {
         label: 'Productos',
         items: [
-          { label: 'Añadir', icon: 'pi pi-fw pi-plus-circle' },
+          //{ label: 'Añadir', icon: 'pi pi-fw pi-plus-circle'},
           {
             label: 'Editar', icon: 'pi pi-fw pi-file-edit',
             command: ($event) =>
@@ -92,10 +88,11 @@ export class ProductsComponent implements OnInit {
       }];
   }
 
-  public deleteByIdProduct(idProduct: number) {
+  public deleteByIdProduct(idProduct: number): void {
+    //await this.getListProducts();
     this.productService.deleteProductoById(idProduct).then(result => {
       if (result.status === 200) {
-        this.getListProducts();
+        this.getListProducts()
       } else {
         console.log("no se pudo eliminar")
       }
@@ -104,9 +101,11 @@ export class ProductsComponent implements OnInit {
 
   public clear(table: Table): void {
     table.clear();
+    this.clearInput = ''
   }
 
   public getEventValue($event: any) {
+    this.clearInput = $event.target.value
     return $event.target.value;
   }
 
@@ -126,12 +125,36 @@ export class ProductsComponent implements OnInit {
 
   public async openDialogProduct() {
     await this.getProductById(this.selectedItem)
-    this.dialogConf.header = 'Detalle Productos',
-      this.dialogConf.width = '70%',
+      this.dialogConf.width = 'auto',
+      this.dialogConf.height = 'auto'
+      this.dialogConf.showHeader = false
       this.dialogConf.baseZIndex = 10000,
-      this.dialogConf.contentStyle = { "max-height": "500px", "overflow": "auto" },
+      this.dialogConf.contentStyle = {"overflow": "auto"} ,
       this.dialogConf.data = this.selectedProduct
     this.ref = this.dialogService.open(DialogActionsProductsComponent, this.dialogConf)
+
+    this.afterCloseDialog()
+  }
+
+  public newProduct(){
+    this.dialogConf.width = 'auto'
+      this.dialogConf.height = 'auto'
+      this.dialogConf.showHeader = false
+      this.dialogConf.baseZIndex = 10000
+      this.dialogConf.contentStyle = {"overflow": "auto"}
+      this.dialogConf.data = this.selectedProduct = {}
+    this.ref = this.dialogService.open(DialogActionsProductsComponent, this.dialogConf)
+
+    this.afterCloseDialog()
+  }
+
+  public afterCloseDialog(){
+    this.ref.onClose.subscribe(res =>{
+      if(res != null){
+        this.getListProducts();
+      }
+      console.log("result parent: ",res)
+    })
   }
 
 }

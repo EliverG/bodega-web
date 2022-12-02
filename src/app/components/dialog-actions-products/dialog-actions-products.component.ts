@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { timeStamp } from 'console';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Products } from 'src/app/shared/interface/Products';
+import { ProductosService } from 'src/app/shared/service/productos.service';
 @Component({
   selector: 'app-dialog-actions-products',
   templateUrl: './dialog-actions-products.component.html',
@@ -13,16 +13,25 @@ export class DialogActionsProductsComponent implements OnInit {
 
   constructor(
     public refConf: DynamicDialogConfig,
+    private dialogRef: DynamicDialogRef,
+    private readonly productService: ProductosService,
   ) { }
 
   ngOnInit(): void {
-    this.displayDataProduct()
-  }
-
-  public displayDataProduct(): void{
     this.product = this.refConf.data
-    console.log("este es product: ", this.product)
-    console.log("este es marca: 2222 ", this.product.marca)
   }
 
+  public closeDialog(): void {
+    this.dialogRef.close(null)
+  }
+
+  public async saveDataProduct(product: Products) {
+    await this.productService.addProduct(product).then((response) => {
+      if (response.status === 200) {
+        this.dialogRef.close(response.body)
+      } else {
+        console.log("error en servicio de guardar")
+      }
+    })
+  }
 }

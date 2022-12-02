@@ -4,6 +4,7 @@ import { catchError, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Login } from '../interface/Login';
 import { MessageService } from 'primeng/api';
+import { Products } from '../interface/Products';
 
 @Injectable({
   providedIn: 'root'
@@ -26,18 +27,18 @@ export class UtilService {
     );
   }
 
-  public getAllProducts(){
-    const url = `${this.apiBodega}/list/products`
-    return this.http.get(url).pipe(
+  public getAllProducts(): Observable<any>{
+    const url = `${this.apiBodega}/product/list`
+    return this.http.get<any>(url).pipe(
       catchError(
         this.handleError<any>('Error al obtener la lista de correos',[])
       )
     )
   }
 
-  public deleteByProdcutId(idProduct : number){
-    const url = `${this.apiBodega}/delete/${idProduct}`
-    return this.http.get(url).pipe(
+  public deleteByProdcutId(idProduct : number): Observable<any>{
+    const url = `${this.apiBodega}/product/delete/${idProduct}`
+    return this.http.get<any>(url).pipe(
       catchError(
         this.handleError<any>('Fallo al eliminar el producto',[])
       )
@@ -45,10 +46,19 @@ export class UtilService {
   }
 
   public getProductById(idProduct: number){
-    const url = `${this.apiBodega}/get-product-id/${idProduct}`
+    const url = `${this.apiBodega}/product/get-by-id/${idProduct}`
     return this.http.get(url).pipe(
       catchError(
         this.handleError<any>('Fallo al consultar el id',[])
+      )
+    )
+  }
+
+  public addProduct(prod: Products){
+    const url = `${this.apiBodega}/product/save`
+    return this.http.post(url,prod).pipe(
+      catchError(
+        this.handleError<any>('Error al guardar producto',[])
       )
     )
   }

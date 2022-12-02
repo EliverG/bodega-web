@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiBodega: "http://localhost:8080"
 };

@@ -1,44 +1,69 @@
 <div class="container">
   <div class="row">
-  <div class="col-md-6">
-    <div class="row">
-      <div>
-        <label class="fw-normal fs-6 text-primary text-start" for="id_product">Id</label>
-        <input type="text" id="id_product" class="form-control form-control-lg"
-        [(ngModel)]="this.product.id_product" disabled/>
-      </div>
-      <div>
-        <p class="fw-normal fs-6 text-primary text-start" for="id_product">Producto</p>
-        <input type="text" id="product" class="form-control form-control-lg" [(ngModel)]="this.product.product_name"/>
-      </div>
-      <div>
-        <p class="fw-normal fs-6 text-primary text-start" for="id_product">Stock</p>
-        <input type="number" id="product" class="form-control form-control-lg" [(ngModel)]="this.product.stock"/>
-      </div>
+    <div class="col-9 text-center">
+      <p class="text-primary fs-5">DETALLE PRODUCTO</p>
+    </div>
+    <div class="col-3">
+      <button pButton pRipple type="button" icon="pi pi-times" class="p-button-raised p-button-outlined p-button-danger p-button-sm"
+        (click)="closeDialog()"></button>
     </div>
   </div>
 
-  <div class="col-md-6">
-    <div class="row">
-      <div>
-        <label class="fw-normal fs-6 text-primary text-start" for="id_product">Categoria</label>
-        <input type="text" id="categoria" class="form-control form-control-lg" [(ngModel)]="this.product.categoria"/>
-      </div>
-      <div>
-        <p class="fw-normal fs-6 text-primary text-start" for="id_product">Marca</p>
-        <input type="text" id="marca" class="form-control form-control-lg" [(ngModel)]="this.product.marca"/>
-      </div>
-      <div>
-        <p class="fw-normal fs-6 text-primary text-start" for="id_product">Serie</p>
-        <input type="text" id="serie" class="form-control form-control-lg" [(ngModel)]="this.product.serie"/>
-      </div>
+  <p-divider></p-divider>
+
+  <div class="row">
+    <label for="" class="col-sm-3 col-form-label fw-normal fs-6 text-primary text-start">ID</label>
+    <div class="col-9">
+      <input type="text" id="id_product" class="form-control form-control-lg" [(ngModel)]="this.product.id_product"
+        [disabled]="true">
     </div>
   </div>
-</div>
-<p-divider></p-divider>
-<div class="row">
-  <div class="col-md-7">
-    <button pButton pRipple type="button" label="Aceptar" class="p-button-outlined"></button>
+
+  <div class="row">
+    <label class="col-sm-3 col-form-label fw-normal fs-6 text-primary text-start" for="id_product">Producto</label>
+    <div class="col-9">
+      <input type="text" id="product" class="form-control form-control-lg" [(ngModel)]="this.product.product_name"
+        pInputText />
+    </div>
   </div>
-</div>
+
+  <div class="row">
+    <label class="col-sm-3 col-form-label fw-normal fs-6 text-primary text-start" for="id_product">Stock</label>
+    <div class="col-9">
+      <input type="number" id="product" class="form-control form-control-lg" [(ngModel)]="this.product.stock"
+        pInputText />
+    </div>
+  </div>
+
+  <div class="row">
+    <label class="col-sm-3 col-form-label fw-normal fs-6 text-primary text-start" for="id_product">Categoria</label>
+    <div class="col-9">
+      <input type="text" id="categoria" class="form-control form-control-lg" [(ngModel)]="this.product.categoria"
+        pInputText />
+    </div>
+  </div>
+
+  <div class="row">
+    <label class="col-sm-3 col-form-label fw-normal fs-6 text-primary text-start" for="id_product">Marca</label>
+    <div class="col-9">
+      <input type="text" id="marca" class="form-control form-control-lg" [(ngModel)]="this.product.marca" pInputText />
+    </div>
+  </div>
+
+  <div class="row">
+    <label class="col-sm-3 col-form-label fw-normal fs-6 text-primary text-start" for="id_product">Serie</label>
+    <div class="col-9">
+      <input type="text" id="serie" class="form-control form-control-lg" [(ngModel)]="this.product.serie" pInputText />
+    </div>
+  </div>
+
+  <p-divider></p-divider>
+
+  <div class="row">
+    <div class="col-md">
+      <button pButton pRipple type="button" label="Aceptar" class="p-button-raised p-button-outlined p-button-success"
+        (click)="saveDataProduct(this.product)">
+      </button>
+    </div>
+  </div>
 </div>
